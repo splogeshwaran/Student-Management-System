@@ -2,23 +2,82 @@
 <html>
 <head>
 <title>Home</title>
-<link rel="stylesheet" href="style1.css">
+<link rel="stylesheet" href="style.css">
 </head>
+<body><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Portal Courses</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
 <body>
 
-<h1>Student Management System</h1>
+<h1>Student Portal</h1>
 
 <hr>
 
-<a href="#">Home</a> |
-<a href="#">Courses</a> |
+<h2>My Courses</h2>
+
+<div class="course-card">
+<h3>Python Programming</h3>
+<p>Learn Python from Basics to Advanced.</p>
+<button onclick="enroll('Python Programming')">Enroll Now</button>
+</div>
+
+<div class="course-card">
+<h3>Java Programming</h3>
+<p>Object Oriented Programming using Java.</p>
+<button onclick="enroll('Java Programming')">Enroll Now</button>
+</div>
+
+<div class="course-card">
+<h3>UI / UX Design</h3>
+<p>Design beautiful user interfaces.</p>
+<button onclick="enroll('UI / UX Design')">Enroll Now</button>
+</div>
+
+<div class="course-card">
+<h3>Machine Learning</h3>
+<p>Introduction to ML Algorithms.</p>
+<button onclick="enroll('Machine Learning')">Enroll Now</button>
+</div>
+
+<div class="course-card">
+<h3>Cloud Computing</h3>
+<p>AWS & Google Cloud Basics.</p>
+<button onclick="enroll('Cloud Computing')">Enroll Now</button>
+</div>
+
+<script>
+
+function enroll(course){
+
+localStorage.setItem("course",course);
+
+alert("Successfully Enrolled in "+course);
+
+}
+
+</script>
+
+</body>
+</html>
+
+<h1>Student Management System</h1>
+<br>
+<div class="nav">
+<a href="home.html">Home</a> |
+<a href="cor.html">Courses</a> |
 <a href="#">Profile</a> |
 <a href="dashboard.html">Dashboard</a> |
 <a href="login.html">Logout</a>
-
+</div>
 <hr>
 
-<h2>Welcome Student</h2>
+<h2>Welcome Logesh!</h2>
+<p>Train your Excelence and groom yourself for your job</p>
 
 <p>Manage your courses, profile and academic records.</p>
 

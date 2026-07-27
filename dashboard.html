@@ -2,12 +2,19 @@
 <html>
 <head>
 <title>Dashboard</title>
-<link rel="stylesheet" href="style1.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <h1 style="text-align: center">Dashboard</h1>
-
+<br>
+<div class="nav">
+<a href="home.html">Home</a> |
+<a href="course.html">Courses</a> |
+<a href="#">Profile</a> |
+<a href="dashboard.html">Dashboard</a> |
+<a href="login.html">Logout</a>
+</div>
 <hr>
 
 <table style="border:1; width:100%">
@@ -27,16 +34,30 @@
 
 </table>
 
-<h2>Quick Links</h2>
+<h2>Enrolled Courses</h2>
 
-<ul>
-<li>Profile</li>
-<li>Courses</li>
-<li>Attendance</li>
-<li>Results</li>
-<li>Library</li>
-<li>Logout</li>
-</ul>
+<ul id="courseList"></ul>
 
+<script>
+
+let courses = JSON.parse(localStorage.getItem("courses")) || [];
+
+let list = document.getElementById("courseList");
+
+if(courses.length==0){
+
+list.innerHTML="<li>No Courses Enrolled</li>";
+
+}else{
+
+courses.forEach(function(course){
+
+list.innerHTML += "<li>"+course+"</li>";
+
+});
+
+}
+
+</script>
 </body>
 </html>

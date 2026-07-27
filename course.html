@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Courses</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Student Management System</h1>
+<br>
+<div class="nav">
+<a href="#">Home</a> |
+<a href="course.html">Courses</a> |
+<a href="#">Profile</a> |
+<a href="dashboard.html">Dashboard</a> |
+<a href="login.html">Logout</a>
+</div>
+
+<hr>
+
+<h2>Available Courses</h2>
+
+<table>
+<tr>
+<th>Course Code</th>
+<th>Course Name</th>
+<th>Duration</th>
+<th>Faculty</th>
+<th>Action</th>
+</tr>
+
+<tr>
+<td>CS101</td>
+<td>Python Programming</td>
+<td>12 Weeks</td>
+<td>Mr. Kumar</td>
+<td><button class="coursebtn" onclick="enrollCourse('Python Programming'),this.textContent='Enrolled'">Enroll</button></td>
+</tr>
+
+<tr>
+<td>CS102</td>
+<td>Java Programming</td>
+<td>14 Weeks</td>
+<td>Mrs. Priya</td>
+<td><button class="coursebtn" onclick="enrollCourse('Java Programming'),this.textContent='Enrolled'">Enroll</button></td>
+</tr>
+
+<tr>
+<td>CS103</td>
+<td>Web Development</td>
+<td>10 Weeks</td>
+<td>Mr. Arjun</td>
+<td><button class="coursebtn" onclick="enrollCourse('Web Development'),this.textContent='Enrolled'">Enroll</button></td>
+</tr>
+
+<tr>
+<td>CS104</td>
+<td>Database Management</td>
+<td>8 Weeks</td>
+<td>Ms. Nisha</td>
+<td><button class="coursebtn" onclick="enrollCourse('Database Management'),this.textContent='Enrolled'">Enroll</button></td>
+</tr>
+
+<tr>
+<td>CS105</td>
+<td>Artificial Intelligence</td>
+<td>16 Weeks</td>
+<td>Dr. Raj</td>
+<td><button class="coursebtn" onclick="enrollCourse('Artificial Intelligence'),this.textContent='Enrolled'">Enroll</button></td>
+</tr>
+
+</table>
+
+<script>
+function enrollCourse(course){
+
+let courses = JSON.parse(localStorage.getItem("courses")) || [];
+
+// Prevent duplicate courses
+if(courses.includes(course)){
+    alert("Already Enrolled!");
+    return;
+}
+
+courses.push(course);
+
+localStorage.setItem("courses", JSON.stringify(courses));
+
+alert(course + " Enrolled Successfully!");
+
+}
+</script>
+
+</body>
+</html>
