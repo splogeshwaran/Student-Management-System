@@ -4,73 +4,12 @@
 <title>Home</title>
 <link rel="stylesheet" href="style.css">
 </head>
-<body><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Student Portal Courses</title>
-<link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<h1>Student Portal</h1>
-
-<hr>
-
-<h2>My Courses</h2>
-
-<div class="course-card">
-<h3>Python Programming</h3>
-<p>Learn Python from Basics to Advanced.</p>
-<button onclick="enroll('Python Programming')">Enroll Now</button>
-</div>
-
-<div class="course-card">
-<h3>Java Programming</h3>
-<p>Object Oriented Programming using Java.</p>
-<button onclick="enroll('Java Programming')">Enroll Now</button>
-</div>
-
-<div class="course-card">
-<h3>UI / UX Design</h3>
-<p>Design beautiful user interfaces.</p>
-<button onclick="enroll('UI / UX Design')">Enroll Now</button>
-</div>
-
-<div class="course-card">
-<h3>Machine Learning</h3>
-<p>Introduction to ML Algorithms.</p>
-<button onclick="enroll('Machine Learning')">Enroll Now</button>
-</div>
-
-<div class="course-card">
-<h3>Cloud Computing</h3>
-<p>AWS & Google Cloud Basics.</p>
-<button onclick="enroll('Cloud Computing')">Enroll Now</button>
-</div>
-
-<script>
-
-function enroll(course){
-
-localStorage.setItem("course",course);
-
-alert("Successfully Enrolled in "+course);
-
-}
-
-</script>
-
-</body>
-</html>
-
 <h1>Student Management System</h1>
 <br>
 <div class="nav">
 <a href="home.html">Home</a> |
-<a href="cor.html">Courses</a> |
-<a href="#">Profile</a> |
+<a href="course.html">Courses</a> |
+<a href="profile.html">Profile</a> |
 <a href="dashboard.html">Dashboard</a> |
 <a href="login.html">Logout</a>
 </div>
