@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Student Management System</h1>
+
+<div class="nav">
+<a href="home.html">Home</a>
+<a href="course.html">Courses</a>
+<a href="profile.html" class="active">Profile</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="login.html">Logout</a>
+</div>
+
+<hr>
+
+<h2>Profile</h2>
+
+<table>
+<tr><th>Field</th><th>Details</th></tr>
+<tr><td>Name</td><td>Logesh</td></tr>
+<tr><td>Roll Number</td><td>21CS045</td></tr>
+<tr><td>Email</td><td>logesh@example.com</td></tr>
+<tr><td>Enrolled Courses</td><td id="courseCount">0</td></tr>
+</table>
+
+<script src="toast.js"></script>
+<script>
+    const courses = JSON.parse(localStorage.getItem("courses")) || [];
+    document.getElementById("courseCount").textContent = courses.length;
+</script>
+
+</body>
+</html>

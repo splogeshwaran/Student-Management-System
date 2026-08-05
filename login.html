@@ -1,21 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <h1>Student Management System</h1>
-<h3>Login</h3>
-<form action="home.html">
-<input type="text" placeholder="User name" required><br><br>
+<h3>Login to continue your learning path</h3>
 
-<input type="password" placeholder="Password" required><br><br>
+<form id="loginForm" novalidate>
 
-<button class="log">Login</button><br><br>
-<a class="btn" href="register.html">Create Account</a>
+    <div class="field" id="userField">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter your username" required>
+        <div class="error-text">Please enter your username.</div>
+    </div>
+
+    <div class="field" id="passField">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required>
+        <div class="error-text">Password must be at least 4 characters.</div>
+    </div>
+
+    <button type="submit">Login</button>
+    <a class="btn" href="register.html">Create Account</a>
 </form>
 
+<script src="toast.js"></script>
+<script>
+
+document.getElementById("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const userField = document.getElementById("userField");
+    const passField = document.getElementById("passField");
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+
+    let valid = true;
+
+    if (username.length === 0) {
+        userField.classList.add("invalid");
+        valid = false;
+    } else {
+        userField.classList.remove("invalid");
+    }
+
+    if (password.length < 4) {
+        passField.classList.add("invalid");
+        valid = false;
+    } else {
+        passField.classList.remove("invalid");
+    }
+
+    if (!valid) {
+        showToast("Please fix the highlighted fields.", "error");
+        return;
+    }
+
+    showToast("Login successful! Redirecting...", "success");
+
+    setTimeout(function () {
+        window.location.href = "home.html";
+    }, 900);
+});
+
+</script>
 
 </body>
 </html>

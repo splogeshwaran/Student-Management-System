@@ -2,94 +2,171 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Courses</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <h1>Student Management System</h1>
-<br>
+
 <div class="nav">
-<a href="#">Home</a> |
-<a href="course.html">Courses</a> |
-<a href="#">Profile</a> |
-<a href="dashboard.html">Dashboard</a> |
+<a href="home.html">Home</a>
+<a href="course.html" class="active">Courses</a>
+<a href="profile.html">Profile</a>
+<a href="dashboard.html">Dashboard</a>
 <a href="login.html">Logout</a>
 </div>
 
 <hr>
 
 <h2>Available Courses</h2>
+<p class="subtitle">Pick a course to see its full learning path, module by module, before you enroll.</p>
 
-<table>
-<tr>
-<th>Course Code</th>
-<th>Course Name</th>
-<th>Duration</th>
-<th>Faculty</th>
-<th>Action</th>
-</tr>
+<div class="course-grid" id="courseGrid"></div>
 
-<tr>
-<td>CS101</td>
-<td>Python Programming</td>
-<td>12 Weeks</td>
-<td>Mr. Kumar</td>
-<td><button class="coursebtn" onclick="enrollCourse('Python Programming'),this.textContent='Enrolled'">Enroll</button></td>
-</tr>
-
-<tr>
-<td>CS102</td>
-<td>Java Programming</td>
-<td>14 Weeks</td>
-<td>Mrs. Priya</td>
-<td><button class="coursebtn" onclick="enrollCourse('Java Programming'),this.textContent='Enrolled'">Enroll</button></td>
-</tr>
-
-<tr>
-<td>CS103</td>
-<td>Web Development</td>
-<td>10 Weeks</td>
-<td>Mr. Arjun</td>
-<td><button class="coursebtn" onclick="enrollCourse('Web Development'),this.textContent='Enrolled'">Enroll</button></td>
-</tr>
-
-<tr>
-<td>CS104</td>
-<td>Database Management</td>
-<td>8 Weeks</td>
-<td>Ms. Nisha</td>
-<td><button class="coursebtn" onclick="enrollCourse('Database Management'),this.textContent='Enrolled'">Enroll</button></td>
-</tr>
-
-<tr>
-<td>CS105</td>
-<td>Artificial Intelligence</td>
-<td>16 Weeks</td>
-<td>Dr. Raj</td>
-<td><button class="coursebtn" onclick="enrollCourse('Artificial Intelligence'),this.textContent='Enrolled'">Enroll</button></td>
-</tr>
-
-</table>
-
+<script src="toast.js"></script>
 <script>
-function enrollCourse(course){
 
-let courses = JSON.parse(localStorage.getItem("courses")) || [];
+const courses = [
+    {
+        code: "CS101",
+        name: "Python Programming",
+        duration: "12 Weeks",
+        faculty: "Mr. Kumar",
+        path: [
+            "Python Basics & Syntax",
+            "Data Structures (Lists, Dicts, Sets)",
+            "Functions & OOP",
+            "File Handling & Modules",
+            "Mini Projects",
+            "Capstone Project"
+        ]
+    },
+    {
+        code: "CS102",
+        name: "Java Programming",
+        duration: "14 Weeks",
+        faculty: "Mrs. Priya",
+        path: [
+            "Java Syntax & OOP Basics",
+            "Collections Framework",
+            "Exception Handling",
+            "Multithreading",
+            "JDBC & Databases",
+            "Capstone Project"
+        ]
+    },
+    {
+        code: "CS103",
+        name: "Web Development",
+        duration: "10 Weeks",
+        faculty: "Mr. Arjun",
+        path: [
+            "HTML & CSS Foundations",
+            "JavaScript Essentials",
+            "Responsive Design",
+            "Git & GitHub",
+            "Backend Basics",
+            "Capstone Project"
+        ]
+    },
+    {
+        code: "CS104",
+        name: "Database Management",
+        duration: "8 Weeks",
+        faculty: "Ms. Nisha",
+        path: [
+            "ER Modeling",
+            "SQL Basics",
+            "Joins & Subqueries",
+            "Normalization",
+            "Transactions & Indexing",
+            "Mini Project"
+        ]
+    },
+    {
+        code: "CS105",
+        name: "Artificial Intelligence",
+        duration: "16 Weeks",
+        faculty: "Dr. Raj",
+        path: [
+            "Python for AI",
+            "Math Foundations",
+            "Machine Learning Basics",
+            "Neural Networks",
+            "NLP Introduction",
+            "Capstone Project"
+        ]
+    }
+];
 
-// Prevent duplicate courses
-if(courses.includes(course)){
-    alert("Already Enrolled!");
-    return;
+const enrolled = JSON.parse(localStorage.getItem("courses")) || [];
+const grid = document.getElementById("courseGrid");
+
+courses.forEach(function (course) {
+    const isEnrolled = enrolled.includes(course.name);
+
+    const card = document.createElement("div");
+    card.className = "course-card";
+
+    card.innerHTML = `
+        <div class="course-card-top">
+            <span class="course-code">${course.code}</span>
+            <span class="course-duration">${course.duration}</span>
+        </div>
+        <div class="course-name">${course.name}</div>
+        <div class="course-faculty">Faculty: ${course.faculty}</div>
+        <div class="course-actions">
+            <button class="coursebtn ${isEnrolled ? "enrolled" : ""}">${isEnrolled ? "Enrolled" : "Enroll"}</button>
+            <button class="pathbtn">View Path</button>
+        </div>
+        <div class="learning-path">
+            <div class="path-track">
+                ${course.path.map(function (step, i) {
+                    return `
+                    <div class="path-step" style="animation-delay:${i * 0.06}s">
+                        <div class="step-label">Module ${i + 1}</div>
+                        <div class="step-title">${step}</div>
+                    </div>`;
+                }).join("")}
+            </div>
+        </div>
+    `;
+
+    const enrollBtn = card.querySelector(".coursebtn");
+    const pathBtn = card.querySelector(".pathbtn");
+    const pathPanel = card.querySelector(".learning-path");
+
+    enrollBtn.addEventListener("click", function () {
+        enrollCourse(course.name, enrollBtn);
+    });
+
+    pathBtn.addEventListener("click", function () {
+        pathPanel.classList.toggle("open");
+        pathBtn.textContent = pathPanel.classList.contains("open") ? "Hide Path" : "View Path";
+    });
+
+    grid.appendChild(card);
+});
+
+function enrollCourse(course, btn) {
+    let courses = JSON.parse(localStorage.getItem("courses")) || [];
+
+    if (courses.includes(course)) {
+        showToast(course + " is already in your enrolled list.", "info");
+        return;
+    }
+
+    courses.push(course);
+    localStorage.setItem("courses", JSON.stringify(courses));
+
+    btn.textContent = "Enrolled";
+    btn.classList.add("enrolled");
+
+    showToast(course + " enrolled successfully!", "success");
 }
 
-courses.push(course);
-
-localStorage.setItem("courses", JSON.stringify(courses));
-
-alert(course + " Enrolled Successfully!");
-
-}
 </script>
 
 </body>

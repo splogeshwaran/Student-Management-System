@@ -1,34 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home</title>
 <link rel="stylesheet" href="style.css">
 </head>
+<body>
+
 <h1>Student Management System</h1>
-<br>
+
 <div class="nav">
-<a href="home.html">Home</a> |
-<a href="course.html">Courses</a> |
-<a href="profile.html">Profile</a> |
-<a href="dashboard.html">Dashboard</a> |
+<a href="home.html" class="active">Home</a>
+<a href="course.html">Courses</a>
+<a href="profile.html">Profile</a>
+<a href="dashboard.html">Dashboard</a>
 <a href="login.html">Logout</a>
 </div>
+
 <hr>
 
-<h2>Welcome Logesh!</h2>
-<p>Train your Excelence and groom yourself for your job</p>
-
-<p>Manage your courses, profile and academic records.</p>
+<h2>Welcome back, Logesh!</h2>
+<p class="subtitle">Train your excellence and groom yourself for the job you want. Manage your courses, profile and academic records — all in one place.</p>
 
 <h3>Available Modules</h3>
 
+<div class="module-list">
 <ul>
-<li>Profile</li>
-<li>Courses</li>
-<li>Attendance</li>
-<li>Results</li>
-<li>Settings</li>
+<li><a href="profile.html">Profile</a></li>
+<li><a href="course.html">Courses</a></li>
+<li><a href="dashboard.html">Attendance</a></li>
+<li><a href="dashboard.html">Results</a></li>
+<li><a href="profile.html">Settings</a></li>
 </ul>
+</div>
+
+<script src="toast.js"></script>
+<script>
+    showToast("Welcome back, Logesh!", "info");
+</script>
 
 </body>
 </html>

@@ -1,63 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1 style="text-align: center">Dashboard</h1>
-<br>
+<h1>Student Management System</h1>
+
 <div class="nav">
-<a href="home.html">Home</a> |
-<a href="course.html">Courses</a> |
-<a href="#">Profile</a> |
-<a href="dashboard.html">Dashboard</a> |
+<a href="home.html">Home</a>
+<a href="course.html">Courses</a>
+<a href="profile.html">Profile</a>
+<a href="dashboard.html" class="active">Dashboard</a>
 <a href="login.html">Logout</a>
 </div>
+
 <hr>
 
-<table style="border:1; width:100%">
+<h2>Dashboard</h2>
+<p class="subtitle" id="greeting">Here's where your learning stands today.</p>
+
+<table id="statsTable">
 <tr>
 <th>Courses</th>
 <th>Attendance</th>
 <th>CGPA</th>
 <th>Assignments</th>
 </tr>
-
 <tr>
-<td>6</td>
+<td id="statCourses">0</td>
 <td>85%</td>
 <td>8.4</td>
 <td>4</td>
 </tr>
-
 </table>
 
 <h2>Enrolled Courses</h2>
 
-<ul id="courseList"></ul>
+<div id="courseList" class="module-list"></div>
 
+<script src="toast.js"></script>
 <script>
 
-let courses = JSON.parse(localStorage.getItem("courses")) || [];
+const courses = JSON.parse(localStorage.getItem("courses")) || [];
+const list = document.getElementById("courseList");
 
-let list = document.getElementById("courseList");
+document.getElementById("statCourses").textContent = courses.length;
 
-if(courses.length==0){
+if (courses.length === 0) {
+    list.innerHTML = `<div class="empty-state">No courses enrolled yet. Head to <a href="course.html">Courses</a> and start a learning path.</div>`;
+} else {
+    courses.forEach(function (course) {
+        // Deterministic "progress" so re-loading the page looks stable
+        const seed = course.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+        const progress = 20 + (seed % 70);
 
-list.innerHTML="<li>No Courses Enrolled</li>";
+        const item = document.createElement("li");
+        item.innerHTML = `
+            <div>${course}</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+        `;
+        list.appendChild(item);
+    });
 
-}else{
-
-courses.forEach(function(course){
-
-list.innerHTML += "<li>"+course+"</li>";
-
-});
-
+    showToast("Welcome back! You're enrolled in " + courses.length + " course" + (courses.length > 1 ? "s" : "") + ".", "success");
 }
 
 </script>
+
 </body>
 </html>
