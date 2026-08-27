@@ -30,10 +30,10 @@
 <tr><td>Enrolled Courses</td><td id="courseCount">0</td></tr>
 </table>
 
-<script src="toast.js"></script>
-<script>
-    const courses = JSON.parse(localStorage.getItem("courses")) || [];
-    document.getElementById("courseCount").textContent = courses.length;
+<script type="module">
+    import { getEnrolledCourses } from './courses.js';
+
+    document.getElementById("courseCount").textContent = getEnrolledCourses().length;
 </script>
 
 </body>

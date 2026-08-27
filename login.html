@@ -29,45 +29,10 @@
     <a class="btn" href="register.html">Create Account</a>
 </form>
 
-<script src="toast.js"></script>
-<script>
+<script type="module">
+    import { handleLoginSubmit } from './auth.js';
 
-document.getElementById("loginForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const userField = document.getElementById("userField");
-    const passField = document.getElementById("passField");
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value;
-
-    let valid = true;
-
-    if (username.length === 0) {
-        userField.classList.add("invalid");
-        valid = false;
-    } else {
-        userField.classList.remove("invalid");
-    }
-
-    if (password.length < 4) {
-        passField.classList.add("invalid");
-        valid = false;
-    } else {
-        passField.classList.remove("invalid");
-    }
-
-    if (!valid) {
-        showToast("Please fix the highlighted fields.", "error");
-        return;
-    }
-
-    showToast("Login successful! Redirecting...", "success");
-
-    setTimeout(function () {
-        window.location.href = "home.html";
-    }, 900);
-});
-
+    document.getElementById("loginForm").addEventListener("submit", handleLoginSubmit);
 </script>
 
 </body>

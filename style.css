@@ -1,5 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap');
+/* ============================================================
+   Student Management System — Design Tokens
+   Theme: "Learning Path" — a coding-course LMS.
+   Course codes rendered in mono, progress rendered as a
+   connected path (the site's signature motif).
+   ============================================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap');
 
 :root{
     --ink:        #16203a;

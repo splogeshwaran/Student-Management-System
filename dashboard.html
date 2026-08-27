@@ -42,10 +42,12 @@
 
 <div id="courseList" class="module-list"></div>
 
-<script src="toast.js"></script>
-<script>
+<script type="module">
 
-const courses = JSON.parse(localStorage.getItem("courses")) || [];
+import { getEnrolledCourses } from './courses.js';
+import { showToast } from './app.js';
+
+const courses = getEnrolledCourses();
 const list = document.getElementById("courseList");
 
 document.getElementById("statCourses").textContent = courses.length;

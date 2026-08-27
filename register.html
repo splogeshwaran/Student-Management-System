@@ -27,7 +27,7 @@
 
     <div class="field" id="rollField">
         <label for="roll">Roll Number</label>
-        <input type="text" id="roll" placeholder="Enter your roll number" required>
+        <input type="number" id="roll" placeholder="Enter your roll number" required>
         <div class="error-text">Please enter your roll number.</div>
     </div>
 
@@ -41,43 +41,10 @@
     <a class="btn" href="login.html">Already have an account</a>
 </form>
 
-<script src="toast.js"></script>
-<script>
+<script type="module">
+    import { handleRegisterSubmit } from './auth.js';
 
-document.getElementById("registerForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const fields = {
-        nameField: document.getElementById("fullname").value.trim().length > 0,
-        emailField: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById("email").value.trim()),
-        rollField: document.getElementById("roll").value.trim().length > 0,
-        passField: document.getElementById("password").value.length >= 6
-    };
-
-    let valid = true;
-
-    Object.keys(fields).forEach(function (id) {
-        const el = document.getElementById(id);
-        if (fields[id]) {
-            el.classList.remove("invalid");
-        } else {
-            el.classList.add("invalid");
-            valid = false;
-        }
-    });
-
-    if (!valid) {
-        showToast("Please fix the highlighted fields.", "error");
-        return;
-    }
-
-    showToast("Account created successfully! Redirecting...", "success");
-
-    setTimeout(function () {
-        window.location.href = "home.html";
-    }, 900);
-});
-
+    document.getElementById("registerForm").addEventListener("submit", handleRegisterSubmit);
 </script>
 
 </body>
