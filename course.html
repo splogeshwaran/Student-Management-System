@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Courses</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -21,64 +21,150 @@
 <hr>
 
 <h2>Available Courses</h2>
-<p class="subtitle">Pick a course to see its full learning path, module by module, before you enroll.</p>
+<p class="subtitle">Browse Coursera course overviews, providers, and workloads before you enroll.</p>
 
 <div class="course-grid" id="courseGrid"></div>
 
 <script type="module">
 
-import { courses, enrollCourse, getEnrolledCourses } from './courses.js';
+import { loadCourses, loadMoreCourses, enrollCourse, getEnrolledCourses } from './courses.js';
 
 const enrolled = getEnrolledCourses();
 const grid = document.getElementById("courseGrid");
+const status = document.createElement("p");
+status.className = "catalog-status";
+status.setAttribute("role", "status");
+grid.before(status);
+const moreButton = document.createElement("button");
+moreButton.type = "button";
+moreButton.className = "load-more";
+moreButton.textContent = "Load more courses";
+moreButton.hidden = true;
+grid.after(moreButton);
 
-courses.forEach(function (course) {
+function addCourseCard(course) {
     const isEnrolled = enrolled.includes(course.name);
-
     const card = document.createElement("div");
     card.className = "course-card";
 
-    card.innerHTML = `
-        <div class="course-card-top">
-            <span class="course-code">${course.code}</span>
-            <span class="course-duration">${course.duration}</span>
-        </div>
-        <div class="course-name">${course.name}</div>
-        <div class="course-faculty">Faculty: ${course.faculty}</div>
-        <div class="course-actions">
-            <button class="coursebtn ${isEnrolled ? "enrolled" : ""}">${isEnrolled ? "Enrolled" : "Enroll"}</button>
-            <button class="pathbtn">View Path</button>
-        </div>
-        <div class="learning-path">
-            <div class="path-track">
-                ${course.path.map(function (step, i) {
-                    return `
-                    <div class="path-step" style="animation-delay:${i * 0.06}s">
-                        <div class="step-label">Module ${i + 1}</div>
-                        <div class="step-title">${step}</div>
-                    </div>`;
-                }).join("")}
-            </div>
-        </div>
-    `;
+    const top = document.createElement("div");
+    top.className = "course-card-top";
+    const duration = document.createElement("span");
+    duration.className = "course-duration";
+    duration.textContent = course.duration;
+    top.appendChild(duration);
+    card.appendChild(top);
 
-    const enrollBtn = card.querySelector(".coursebtn");
-    const pathBtn = card.querySelector(".pathbtn");
-    const pathPanel = card.querySelector(".learning-path");
+    if (course.photoUrl) {
+        try {
+            const imageUrl = new URL(course.photoUrl);
+            if (imageUrl.protocol === "https:") {
+                const image = document.createElement("img");
+                image.className = "course-image";
+                image.src = imageUrl.href;
+                image.alt = "";
+                image.loading = "lazy";
+                card.appendChild(image);
+            }
+        } catch (error) {
+            console.warn("Skipping invalid course image URL.", error);
+        }
+    }
+
+    const name = document.createElement("div");
+    name.className = "course-name";
+    name.textContent = course.name;
+    const description = document.createElement("p");
+    description.className = "course-description";
+    description.textContent = course.description || "Explore this course on Coursera.";
+    const provider = document.createElement("div");
+    provider.className = "course-faculty";
+    provider.textContent = "Provider: " + course.faculty;
+    card.append(name, description, provider);
+
+    const actions = document.createElement("div");
+    actions.className = "course-actions";
+    const enrollBtn = document.createElement("button");
+    enrollBtn.type = "button";
+    enrollBtn.className = "coursebtn" + (isEnrolled ? " enrolled" : "");
+    enrollBtn.textContent = isEnrolled ? "Enrolled" : "Enroll";
+    const detailsBtn = document.createElement("button");
+    detailsBtn.type = "button";
+    detailsBtn.className = "pathbtn";
+    detailsBtn.textContent = "Course details";
+    actions.append(enrollBtn, detailsBtn);
+    card.appendChild(actions);
+
+    const details = document.createElement("div");
+    details.className = "course-details";
+    details.hidden = true;
+    const fullDescription = document.createElement("p");
+    fullDescription.textContent = course.description || "No course description is available.";
+    details.appendChild(fullDescription);
+    if (course.url) {
+        const link = document.createElement("a");
+        link.href = course.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = "Open course on Coursera";
+        details.appendChild(link);
+    }
+    card.appendChild(details);
 
     enrollBtn.addEventListener("click", function () {
         enrollCourse(course.name, enrollBtn);
     });
 
-    pathBtn.addEventListener("click", function () {
-        pathPanel.classList.toggle("open");
-        pathBtn.textContent = pathPanel.classList.contains("open") ? "Hide Path" : "View Path";
+    detailsBtn.addEventListener("click", function () {
+        details.hidden = !details.hidden;
+        detailsBtn.textContent = details.hidden ? "Course details" : "Hide details";
     });
 
     grid.appendChild(card);
+}
+
+function updateStatus() {
+    const total = window.COURSE_TOTAL;
+    status.textContent = total
+        ? "Showing " + grid.children.length + " of " + total.toLocaleString() + " Coursera courses."
+        : "Showing " + grid.children.length + " Coursera courses.";
+    moreButton.hidden = !window.COURSES_HAS_MORE;
+    moreButton.textContent = "Load more courses";
+}
+
+async function fetchNextPage(initial) {
+    moreButton.disabled = true;
+    moreButton.textContent = "Loading…";
+    status.textContent = "Loading courses from Coursera…";
+    try {
+        const addedCourses = initial ? await loadCourses() : await loadMoreCourses();
+        addedCourses.forEach(addCourseCard);
+        if (!grid.children.length) {
+            status.textContent = "Coursera did not return any courses.";
+            moreButton.hidden = true;
+            return;
+        }
+        updateStatus();
+    } catch (error) {
+        status.textContent = "Unable to load courses from Coursera. " +
+            (error instanceof Error ? error.message : String(error));
+        moreButton.textContent = "Retry";
+        moreButton.hidden = false;
+    } finally {
+        moreButton.disabled = false;
+    }
+}
+
+moreButton.addEventListener("click", function () {
+    fetchNextPage(false);
 });
 
+fetchNextPage(true);
+
 </script>
+
+<script src="courses-data.js"></script>
+<script src="chatbot.js?v=4"></script>
 
 </body>
 </html>

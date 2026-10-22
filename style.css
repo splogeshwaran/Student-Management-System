@@ -285,7 +285,7 @@ p{
 
 .course-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns:repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap:20px;
     max-width:1100px;
     margin:20px auto 40px;
@@ -293,6 +293,7 @@ p{
 }
 
 .course-card{
+    min-width:0;
     background:var(--surface);
     border:1px solid var(--line);
     border-radius:var(--radius-lg);
@@ -306,6 +307,15 @@ p{
     box-shadow:var(--shadow);
 }
 
+.course-image{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+    border-radius:var(--radius-sm);
+    margin-top:14px;
+    background:#eef0fb;
+}
+
 .course-card-top{
     display:flex;
     justify-content:space-between;
@@ -313,22 +323,13 @@ p{
     gap:10px;
 }
 
-.course-code{
-    font-family:var(--font-mono);
-    font-size:12px;
-    font-weight:600;
-    color:var(--indigo);
-    background:#eef0fb;
-    padding:4px 9px;
-    border-radius:6px;
-    letter-spacing:.03em;
-}
-
 .course-duration{
     font-size:12px;
     color:var(--ink-soft);
     font-weight:600;
-    white-space:nowrap;
+    min-width:0;
+    text-align:right;
+    overflow-wrap:anywhere;
 }
 
 .course-name{
@@ -337,6 +338,16 @@ p{
     font-weight:600;
     margin:12px 0 4px;
     color:var(--navy);
+}
+
+.course-description{
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:3;
+    overflow:hidden;
+    text-align:left;
+    margin:8px 0 14px;
+    font-size:13px;
 }
 
 .course-faculty{
@@ -385,6 +396,33 @@ p{
 }
 
 .pathbtn:hover{ background:#eef0fb; }
+
+.catalog-status{
+    min-height:20px;
+    margin:18px auto 8px;
+}
+
+.load-more{
+    display:block;
+    width:auto;
+    min-width:200px;
+    margin:0 auto 40px;
+    padding:11px 24px;
+}
+
+.course-details{
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px solid var(--line);
+    color:var(--ink-soft);
+    font-size:13px;
+}
+
+.course-details p{
+    margin:0 0 12px;
+    text-align:left;
+    white-space:pre-line;
+}
 
 /* ---------------- Learning path (signature element) ---------------- */
 
@@ -536,3 +574,55 @@ p{
     .nav{ justify-content:center; }
     h1{ font-size:22px; padding:20px 14px; }
 }
+
+/* ---------------- Chatbot ---------------- */
+
+#chatbot{ position:fixed; right:20px; bottom:20px; z-index:9000; }
+
+.chat-fab{ position:relative; border-radius:999px; font-size:14px;
+    width:auto; padding:13px 22px; margin:0;
+    box-shadow:var(--shadow);
+}
+
+.chat-panel{
+    width:340px; max-width:calc(100vw - 40px); height:460px; max-height:calc(100vh - 40px);
+    display:flex; flex-direction:column;
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius-lg); box-shadow:var(--shadow); overflow:hidden;
+}
+.chat-panel[hidden]{ display:none; }
+
+.chat-head{
+    display:flex; justify-content:space-between; align-items:center;
+    background:linear-gradient(120deg, var(--navy), var(--indigo-dark));
+    color:white; padding:14px 16px; font-family:var(--font-display); font-weight:600;
+}
+.chat-close{ width:auto; margin:0; padding:0 6px; background:transparent; font-size:22px; line-height:1; }
+.chat-close:hover{ background:transparent; opacity:.8; }
+
+.chat-log{ flex:1; overflow-y:auto; padding:14px; display:flex; flex-direction:column; gap:8px; background:var(--canvas); }
+
+.msg{ max-width:85%; padding:9px 12px; border-radius:14px; font-size:13.5px; line-height:1.45; white-space:pre-line; }
+.msg.bot{ align-self:flex-start; background:var(--surface); border:1px solid var(--line); border-bottom-left-radius:4px; }
+.msg.user{ align-self:flex-end; background:var(--indigo); color:white; border-bottom-right-radius:4px; }
+
+.chat-chips{ display:flex; gap:6px; flex-wrap:wrap; padding:8px 12px 0; background:var(--surface); }
+.chat-chips button{
+    width:auto; margin:0; padding:5px 10px; font-size:12px; font-weight:500;
+    background:#eef0fb; color:var(--indigo);
+}
+.chat-chips button:hover{ background:#e0e4f8; }
+
+.chat-form{
+    display:flex; gap:8px; width:auto; margin:0; padding:10px 12px;
+    border:none; border-top:1px solid var(--line); border-radius:0; box-shadow:none; text-align:left;
+}
+.chat-form input{ flex:1; }
+.chat-form button{ width:auto; margin:0; padding:10px 16px; }
+
+@media (max-width:480px){
+    #chatbot{ right:12px; bottom:12px; }
+    .chat-panel{ width:calc(100vw - 24px); max-height:calc(100vh - 24px); }
+}
+
+@media (prefers-reduced-motion:reduce){ *{ animation:none !important; transition:none !important; } }
